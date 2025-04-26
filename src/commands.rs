@@ -121,6 +121,7 @@ pub enum CliSubCommand {
     /// **Security Note**: This subcommand requires direct handling of private keys. Ensure you are in a
     /// secure environment to prevent key exposure. For generating keys securely, consider using the `wallet`
     /// subcommand instead.
+    #[cfg(any(feature = "bip322"))]
     Bip322 {
         #[command(subcommand)]
         subcommand: Bip322SubCommand,

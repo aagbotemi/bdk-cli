@@ -21,6 +21,7 @@ use crate::commands::OnlineWalletSubCommand::*;
 use crate::commands::*;
 use crate::error::BDKCliError as Error;
 use crate::utils::*;
+#[cfg(any(feature = "bip322"))]
 use bdk_bip322::{SignatureFormat, Signer, Verifier};
 use bdk_wallet::bip39::{Language, Mnemonic};
 use bdk_wallet::bitcoin::bip32::{DerivationPath, KeySource};
@@ -671,6 +672,7 @@ pub(crate) fn handle_compile_subcommand(
 }
 
 /// Execute bip322 sub-command
+#[cfg(any(feature = "bip322"))]
 pub fn handle_bip322_subcommand(subcommand: Bip322SubCommand) -> Result<serde_json::Value, Error> {
     match subcommand {
         Bip322SubCommand::Sign {
@@ -730,9 +732,7 @@ pub fn handle_bip322_subcommand(subcommand: Bip322SubCommand) -> Result<serde_js
                         .trim()
                         .to_string();
                     if input.is_empty() {
-                        return Err(
-                            Error::Generic("Private key cannot be empty".to_string())
-                        );
+                        return Err(Error::Generic("Private key cannot be empty".to_string()));
                     }
                     Some(input)
                 }
@@ -748,7 +748,8 @@ pub fn handle_bip322_subcommand(subcommand: Bip322SubCommand) -> Result<serde_js
     }
 }
 
-// Function to parse the signature format from a string
+/// Function to parse the signature format from a string
+#[cfg(any(feature = "bip322"))]
 fn parse_signature_format(format_str: &str) -> Result<SignatureFormat, Error> {
     match format_str.to_lowercase().as_str() {
         "legacy" => Ok(SignatureFormat::Legacy),
@@ -914,6 +915,7 @@ pub(crate) async fn handle_command(cli_opts: CliOpts) -> Result<String, Error> {
             }
             Ok("".to_string())
         }
+        #[cfg(any(feature = "bip322"))]
         CliSubCommand::Bip322 { subcommand } => {
             let result = handle_bip322_subcommand(subcommand)?;
             serde_json::to_string_pretty(&result)

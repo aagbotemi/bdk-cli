@@ -2,6 +2,7 @@
 
 Ensure you are in a secure environment to prevent key exposure.
 
+To build, run `cargo build --features bip322`
 For testing purposes only, use `L3VFeEujGtevx9w18HD1fhRbCH67Az2dpCymeRE1SoPK6XQtaN2k` for private key.
 
 ## Signing and Verifying with Different Address Types
