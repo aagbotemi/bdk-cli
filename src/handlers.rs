@@ -685,7 +685,7 @@ pub fn handle_bip322_subcommand(subcommand: Bip322SubCommand) -> Result<serde_js
                     .trim()
                     .to_string();
                 if content.is_empty() {
-                    return Err(Error::Generic("Key file is empty".to_string()).into());
+                    return Err(Error::Generic("Key file is empty".to_string()));
                 }
                 content
             } else {
@@ -694,9 +694,7 @@ pub fn handle_bip322_subcommand(subcommand: Bip322SubCommand) -> Result<serde_js
                     .trim()
                     .to_string();
                 if input.is_empty() {
-                    return Err(
-                        Error::Generic("Private key cannot be empty".to_string()).into(),
-                    );
+                    return Err(Error::Generic("Private key cannot be empty".to_string()));
                 }
                 input
             };
@@ -719,13 +717,11 @@ pub fn handle_bip322_subcommand(subcommand: Bip322SubCommand) -> Result<serde_js
             let wif_opt: Option<String> = if signature_format == SignatureFormat::Legacy {
                 if let Some(path) = key_file {
                     let content = fs::read_to_string(&path)
-                        .map_err(|e| {
-                            Error::Generic(format!("Failed to read key file: {}", e))
-                        })?
+                        .map_err(|e| Error::Generic(format!("Failed to read key file: {}", e)))?
                         .trim()
                         .to_string();
                     if content.is_empty() {
-                        return Err(Error::Generic("Key file is empty".to_string()).into());
+                        return Err(Error::Generic("Key file is empty".to_string()));
                     }
                     Some(content)
                 } else {
@@ -734,10 +730,9 @@ pub fn handle_bip322_subcommand(subcommand: Bip322SubCommand) -> Result<serde_js
                         .trim()
                         .to_string();
                     if input.is_empty() {
-                        return Err(Error::Generic(
-                            "Private key cannot be empty".to_string(),
-                        )
-                        .into());
+                        return Err(
+                            Error::Generic("Private key cannot be empty".to_string())
+                        );
                     }
                     Some(input)
                 }
